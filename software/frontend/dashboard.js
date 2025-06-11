@@ -222,4 +222,4 @@ autoDisableBtn.addEventListener('click', () => {
   fetchControl();
   setInterval(fetchControl, 1000);
 
-}); // end DOMContentLoaded
+}); 
