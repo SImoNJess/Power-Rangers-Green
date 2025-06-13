@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Live Dashboard</title>
+
+    <!-- Tailwind + DaisyUI -->
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/daisyui.css" />
+
+    <!-- Chart.js core -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800 min-h-screen">
+
+    <nav class="navbar bg-white shadow-lg mb-6">
+        <div class="flex-1 px-4">
+            <a href="/index.html" class="btn btn-ghost text-lg btn-active">Today</a>
+            <a href="/yesterday.html" class="btn btn-ghost text-lg">History</a>
+            <a href="/controls.html" class="btn btn-ghost text-lg">Controls</a>
+        </div>
+        <span class="text-2xl font-extrabold bg-clip-text text-transparent
+                 bg-gradient-to-r from-green-400 via-blue-500 to-purple-600
+                 animate-pulse drop-shadow-lg">
+            Power Rangers
+        </span>
+    </nav>
+
+    <main class="px-6 space-y-8">
+
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <!-- Tick & Day -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">Tick &amp; Day</h3>
+                <div class="flex justify-between items-center mt-4">
+                    <div class="flex flex-col items-center">
+                        <span id="tick-value" class="text-3xl font-bold text-indigo-600">--</span>
+                        <span class="text-sm text-gray-500">Tick</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span id="day-value" class="text-3xl font-bold text-indigo-600">--</span>
+                        <span class="text-sm text-gray-500">Day</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prices -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">Prices</h3>
+                <div class="flex justify-between items-center mt-4">
+                    <div class="flex flex-col items-center">
+                        <span id="buy-price-value" class="text-3xl font-bold text-green-500">--</span>
+                        <span class="text-sm text-gray-500">Buy ($)</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span id="sell-price-value" class="text-3xl font-bold text-red-500">--</span>
+                        <span class="text-sm text-gray-500">Sell ($)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-white shadow-lg p-4 flex justify-between">
+                <h3 class="card-title text-xl font-semibold m-0">Deferable Loads</h3>
+                <label for="deferrable-modal" class="btn btn-accent btn-md items-center">Check</label>
+            </div>
+
+            <!-- deferrable button -->
+            <input type="checkbox" id="deferrable-modal" class="modal-toggle" />
+            <div class="modal bg-white/30">
+                <div class="modal-box bg-white text-gray-900">
+                    <h3 class="font-bold text-2xl text-gray-900 mb-4">Deferable Load Details</h3>
+                    <ul class="space-y-4 text-white-800">
+                        <li>
+                            <span class="font-medium text-white-50">Load 1</span><br />
+                            <span class="text-white-100">Start Tick:</span>
+                            <span id="d1-start-modal" class="font-semibold text-white-200">--</span><br />
+                            <span class="text-white-100">End Tick:</span>
+                            <span id="d1-end-modal" class="font-semibold text-white-200">--</span><br />
+                            <span class="text-white-100">Energy:</span>
+                            <span id="d1-energy" class="font-semibold text-white-200">--</span> J
+                        </li>
+                        <li>
+                            <span class="font-medium text-white-50">Load 2</span><br />
+                            <span class="text-white-100">Start Tick:</span>
+                            <span id="d2-start-modal" class="font-semibold text-white-200">--</span><br />
+                            <span class="text-white-100">End Tick:</span>
+                            <span id="d2-end-modal" class="font-semibold text-white-200">--</span><br />
+                            <span class="text-white-100">Energy:</span>
+                            <span id="d2-energy" class="font-semibold text-white-200">--</span> J
+                        </li>
+                        <li>
+                            <span class="font-medium text-white-50">Load 3</span><br />
+                            <span class="text-white-100">Start Tick:</span>
+                            <span id="d3-start-modal" class="font-semibold text-white-200">--</span><br />
+                            <span class="text-white-100">End Tick:</span>
+                            <span id="d3-end-modal" class="font-semibold text-white-200">--</span><br />
+                            <span class="text-white-100">Energy:</span>
+                            <span id="d3-energy" class="font-semibold text-white-200">--</span> J
+                        </li>
+                    </ul>
+                    <div class="modal-action">
+                        <label for="deferrable-modal"
+                            class="btn bg-purple-600 hover:bg-purple-700 text-white font-bold">
+                            Close
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!-- Cost -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">Cost</h3>
+                <div class="flex justify-center items-center mt-4">
+                    <div class="flex flex-col items-center">
+                        <span id="cost-value" class="text-3xl font-bold text-purple-600">--</span>
+                        <span class="text-sm text-gray-500">Cost ($)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Policy Action (live) -->
+        <div class="card bg-white shadow-lg p-4">
+            <h3 class="card-title text-xl font-semibold">Action</h3>
+            <div class="mt-2">
+                <span id="policy-action-value" class="text-3xl font-bold">--</span>
+            </div>
+        </div>
+
+        <!-- Charts grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Irradiance Chart -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold mb-2">Irradiance</h3>
+                <canvas id="sunChart"></canvas>
+            </div>
+            <!-- PV Power Chart -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold mb-2">PV Power</h3>
+                <canvas id="pvChart"></canvas>
+            </div>
+            <!-- Demand Chart -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold mb-2">Demand</h3>
+                <canvas id="demandChart"></canvas>
+            </div>
+            <!-- Total Demand Chart -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold mb-2">Total Demand</h3>
+                <canvas id="combinedChart"></canvas>
+            </div>
+            <!-- Buy Price Chart -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold mb-2">Buy Price</h3>
+                <canvas id="buyChart"></canvas>
+            </div>
+            <!-- Sell Price Chart -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold mb-2">Sell Price</h3>
+                <canvas id="sellChart"></canvas>
+            </div>
+            <!-- Policy Forecast Chart -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold mb-2">Energy Decision</h3>
+                <canvas id="policyChart"></canvas>
+            </div>
+            <!-- Deferrable 1 -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">Deferrable 1</h3>
+                <canvas id="deferralChart1"></canvas>
+            </div>
+            <!-- Deferrable 2 -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">Deferrable 2</h3>
+                <canvas id="deferralChart2"></canvas>
+            </div>
+            <!-- Deferrable 3 -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">Deferrable 3</h3>
+                <canvas id="deferralChart3"></canvas>
+            </div>
+
+
+        </section>
+
+
+
+    </main>
+
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

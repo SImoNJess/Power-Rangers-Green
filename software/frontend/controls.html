@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SmartGrid Controls</title>
+
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/daisyui.css" />
+</head>
+
+<body class="bg-gray-100 text-gray-800 min-h-screen">
+
+    <nav class="navbar bg-white shadow-lg mb-6">
+        <div class="flex-1 px-4">
+            <a href="/index.html" class="btn btn-ghost text-lg">Today</a>
+            <a href="/yesterday.html" class="btn btn-ghost text-lg">History</a>
+            <a href="/controls.html" class="btn btn-ghost btn-active text-lg">Controls</a>
+        </div>
+        <span class="text-2xl font-extrabold bg-clip-text text-transparent
+             bg-gradient-to-r from-green-400 via-blue-500 to-purple-600
+             animate-pulse drop-shadow-lg">
+            Power Rangers
+        </span>
+    </nav>
+
+    <main class="px-6 space-y-8">
+
+
+        <!--  Hardware Connection Status Grid  -->
+        <section>
+            <h2 class="text-lg font-semibold mb-2"></h2>
+            <div class="grid grid-cols-8 gap-4">
+                <!-- PV -->
+                <div class="flex flex-col items-center">
+                    <div id="status-pv" class="w-4 h-4 rounded-full bg-red-500"></div>
+                    <span class="text-xs mt-1">PV</span>
+                </div>
+                <!-- DC bus (voltage) -->
+                <div class="flex flex-col items-center">
+                    <div id="status-dc" class="w-4 h-4 rounded-full bg-red-500"></div>
+                    <span class="text-xs mt-1">DC</span>
+                </div>
+                <!-- Capacitor -->
+                <div class="flex flex-col items-center">
+                    <div id="status-cap" class="w-4 h-4 rounded-full bg-red-500"></div>
+                    <span class="text-xs mt-1">CAP</span>
+                </div>
+                <!-- External import/export -->
+                <div class="flex flex-col items-center">
+                    <div id="status-ext" class="w-4 h-4 rounded-full bg-red-500"></div>
+                    <span class="text-xs mt-1">EXT</span>
+                </div>
+                <!-- LED1 -->
+                <div class="flex flex-col items-center">
+                    <div id="status-led1" class="w-4 h-4 rounded-full bg-red-500"></div>
+                    <span class="text-xs mt-1">LED 1</span>
+                </div>
+                <!-- LED2 -->
+                <div class="flex flex-col items-center">
+                    <div id="status-led2" class="w-4 h-4 rounded-full bg-red-500"></div>
+                    <span class="text-xs mt-1">LED 2</span>
+                </div>
+                <!-- LED3 -->
+                <div class="flex flex-col items-center">
+                    <div id="status-led3" class="w-4 h-4 rounded-full bg-red-500"></div>
+                    <span class="text-xs mt-1">LED 3</span>
+                </div>
+                <!-- LED4 -->
+                <div class="flex flex-col items-center">
+                    <div id="status-led4" class="w-4 h-4 rounded-full bg-red-500"></div>
+                    <span class="text-xs mt-1">LED 4</span>
+                </div>
+            </div>
+        </section>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">PV Power</h3>
+                <p class="text-3xl font-bold text-indigo-500"><span id="pv-power">--</span> W</p>
+            </div>
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">DC Bus Voltage</h3>
+                <p class="text-3xl font-bold text-indigo-500"><span id="bus-voltage">--</span> V</p>
+            </div>
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">Sun Irradiance</h3>
+                <p class="text-3xl font-bold text-yellow-500"><span id="irradiance">--%</span></p>
+            </div>
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">Cost</h3>
+                <p class="text-3xl font-bold text-indigo-500"><span id="cost-value">--</span> $</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">Capacitor Energy</h3>
+                <p class="flex items-baseline text-3xl font-bold text-purple-500">
+                    <span id="cap-energy">--</span>&nbsp;J&nbsp;
+                    <span id="cap-energy-auto-wrapper" class="text-base text-gray-500 hidden">
+                        (Auto: <span id="cap-cmd-auto">H</span>)
+                    </span>
+                </p>
+                <div class="mt-4 flex gap-2">
+                    <button class="btn btn-sm btn-outline btn-success" onclick="sendCapCommand('S')">Store</button>
+                    <button class="btn btn-sm btn-outline btn-error" onclick="sendCapCommand('E')">Extract</button>
+                    <button class="btn btn-sm btn-outline btn-secondary" onclick="sendCapCommand('H')">Hold</button>
+                </div>
+            </div>
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">SoC</h3>
+                <p class="text-3xl font-bold text-purple-500"><span id="cap-SoC">--</span> %</p>
+            </div>
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">&Delta;E in the last tick</h3>
+                <p class="text-3xl font-bold text-purple-500"><span id="cap-delta">--</span> J</p>
+            </div>
+
+        </div>
+
+
+        <!-- LED control section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- LED 1 -->
+            <div class="card bg-white shadow-lg p-4 space-y-4">
+                <h3 class="card-title text-lg font-medium">LED 1 Power</h3>
+                <p class="text-2xl flex items-baseline">
+                    <span><span id="led1-power">--</span> W</span>
+                    <!-- hidden by default -->
+                    <span id="led1-auto-wrapper" class="text-sm text-gray-500 ml-3 hidden">
+                        (Auto: <span id="led1-auto">--</span> W)
+                    </span>
+                </p>
+                <div class="flex gap-2">
+                    <input id="led1-input" type="number" step="0.1" placeholder="Setpoint (W)"
+                        class="input input-bordered flex-1 bg-gray-800 placeholder-gray-400" />
+                    <button id="led1-override-btn" class="btn btn-accent">Override</button>
+                </div>
+            </div>
+            <!-- LED 2 -->
+            <div class="card bg-white shadow-lg p-4 space-y-4">
+                <h3 class="card-title text-lg font-medium">LED 2 Power</h3>
+                <p class="text-2xl flex items-baseline">
+                    <span><span id="led2-power">--</span> W</span>
+                    <!-- hidden by default -->
+                    <span id="led2-auto-wrapper" class="text-sm text-gray-500 ml-3 hidden">
+                        (Auto: <span id="led2-auto">--</span> W)
+                    </span>
+                </p>
+                <div class="flex gap-2">
+                    <input id="led2-input" type="number" step="0.1" placeholder="Setpoint (W)"
+                        class="input input-bordered flex-1 bg-gray-800 placeholder-gray-400" />
+                    <button id="led2-override-btn" class="btn btn-accent">Override</button>
+                </div>
+            </div>
+            <!-- LED 3 -->
+            <div class="card bg-white shadow-lg p-4 space-y-4">
+                <h3 class="card-title text-lg font-medium">LED 3 Power</h3>
+                <p class="text-2xl flex items-baseline">
+                    <span><span id="led3-power">--</span> W</span>
+                    <!-- hidden by default -->
+                    <span id="led3-auto-wrapper" class="text-sm text-gray-500 ml-3 hidden">
+                        (Auto: <span id="led3-auto">--</span> W)
+                    </span>
+                </p>
+                <div class="flex gap-2">
+                    <input id="led3-input" type="number" step="0.1" placeholder="Setpoint (W)"
+                        class="input input-bordered flex-1 bg-gray-800 placeholder-gray-400" />
+                    <button id="led3-override-btn" class="btn btn-accent">Override</button>
+                </div>
+            </div>
+            <!-- LED 4 -->
+            <div class="card bg-white shadow-lg p-4 space-y-4">
+                <h3 class="card-title text-lg font-medium">LED 4 Power</h3>
+                <p class="text-2xl flex items-baseline">
+                    <span><span id="led4-power">--</span> W</span>
+                    <!-- hidden button -->
+                    <span id="led4-auto-wrapper" class="text-sm text-gray-500 ml-3 hidden">
+                        (Auto: <span id="led4-auto">--</span> W)
+                    </span>
+                </p>
+                <div class="flex gap-2">
+                    <input id="led4-input" type="number" step="0.1" placeholder="Setpoint (W)"
+                        class="input input-bordered flex-1 bg-gray-800 placeholder-gray-400" />
+                    <button id="led4-override-btn" class="btn btn-accent">Override</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">Import Power</h3>
+                <p class="text-3xl font-bold text-indigo-500"><span id="import-power">--</span> W</p>
+            </div>
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold">Export Power</h3>
+                <p class="text-3xl font-bold text-indigo-500"><span id="export-power">--</span> W</p>
+            </div>
+            <!-- MPPT1 Toggle -->
+            <div class="card bg-white shadow-lg p-4 space-y-4">
+                <h3 class="card-title text-lg font-medium">MPPT Control</h3>
+                <div class="flex gap-2">
+                    <button id="mppt1-enable-btn" class="btn btn-success">Enable</button>
+                    <button id="mppt1-disable-btn" class="btn btn-error">Disable</button>
+                </div>
+            </div>
+            <!-- Auto LED Control -->
+            <div class="card bg-white shadow-lg p-4 space-y-4">
+                <h3 class="card-title text-lg font-medium">Auto Control</h3>
+                <div class="flex gap-2">
+                    <button id="auto-enable-btn" class="btn btn-success">Enable</button>
+                    <button id="auto-disable-btn" class="btn btn-error" disabled>Disable</button>
+                </div>
+            </div>
+
+
+        </div>
+
+    </main>
+
+    <script src="controls.js"></script>
+</body>
+
+</html>

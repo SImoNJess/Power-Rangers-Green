@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Yesterday’s History</title>
+
+    <!-- Tailwind + DaisyUI local bundles -->
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/daisyui.css" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800 min-h-screen">
+
+    <nav class="navbar bg-white shadow-lg mb-6">
+        <div class="flex-1 px-4">
+            <a href="/index.html" class="btn btn-ghost text-lg">Today</a>
+            <a href="/yesterday.html" class="btn btn-ghost btn-active text-lg">History</a>
+            <a href="/controls.html" class="btn btn-ghost text-lg">Controls</a>
+        </div>
+        <span class="text-2xl font-extrabold bg-clip-text text-transparent
+             bg-gradient-to-r from-green-400 via-blue-500 to-purple-600
+             animate-pulse drop-shadow-lg">
+            Power Rangers
+        </span>
+    </nav>
+
+    <main class="px-6 space-y-8">
+
+        <!-- Day selector & buttons -->
+        <div class="card bg-white shadow-lg p-4">
+            <div class="flex flex-row items-center space-x-4 overflow-x-auto">
+                <label for="daySelect" class="font-semibold text-lg whitespace-nowrap">
+                    Select Day:
+                </label>
+                <select id="daySelect" class="select select-bordered w-auto whitespace-nowrap bg-indigo-500">
+                    <option>Loading…</option>
+                </select>
+                <button id="loadDayBtn" class="btn btn-primary whitespace-nowrap">
+                    Load Data
+                </button>
+                <button id="downloadBtn" class="btn btn-secondary whitespace-nowrap">
+                    Download
+                </button>
+                <button id="downloadAllBtn" class="btn btn-secondary whitespace-nowrap">
+                    Download All
+                </button>
+            </div>
+        </div>
+
+
+
+        <!-- Charts grid -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Irradiance chart -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold mb-2">Irradiance</h3>
+                <canvas id="irradianceChart"></canvas>
+            </div>
+            <!-- Price chart -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold mb-2">Buy &amp; Sell Price</h3>
+                <canvas id="priceChart"></canvas>
+            </div>
+            <!-- Demand chart -->
+            <div class="card bg-white shadow-lg p-4">
+                <h3 class="card-title text-xl font-semibold mb-2">Demand</h3>
+                <canvas id="demandChart"></canvas>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="yesterday.js"></script>
+</body>
+
+</html>
