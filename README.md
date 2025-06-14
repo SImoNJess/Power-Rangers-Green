@@ -60,6 +60,7 @@ The hardware subsystem is built around Raspberry Pi Pico W microcontrollers, eac
   Each Pico W module runs an MQTT client that connects to a central broker, subscribes to control channels, and publishes telemetry such as current draw, voltage, capacitor state, and more.
 
 This hardware configuration allows for full system integration with the software controller, supporting real-time feedback, efficient energy management, and hands-on testing of energy optimization algorithms in a physically realistic environment.
+
 ---
 
 ## File Structure
@@ -68,7 +69,7 @@ This hardware configuration allows for full system integration with the software
 - `power_server.py` – main Flask backend; includes REST API, data fetcher, MQTT handler, and algorithm runners.
 - `smartgrid.db` – SQLite database storing tick-wise data and deferrable loads.
 
-### /static
+### static
 - **UI files** served directly by Flask:
   - `index.html` – real-time dashboard
   - `yesterday.html` – historical data viewer
@@ -76,11 +77,11 @@ This hardware configuration allows for full system integration with the software
   - `style.css` – Tailwind-based custom UI styling
   - `dashboard.js`, `yesterday.js`, `controls.js` – JavaScript logic for fetching, plotting, and interactivity
 
-### /models
+### models
 - `lstm_model.h5`, `dqn_resnet_model.keras`, etc. – ML models used for prediction and policy generation
 - `*.pkl` – Scalers for pre/post-processing model inputs and outputs
 
-### /mqtt
+### mqtt
 - Broker setup for MQTT communication between server and Picos
 - Includes test utilities to simulate device input during development
 
