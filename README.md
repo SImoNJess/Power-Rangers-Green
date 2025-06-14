@@ -63,29 +63,5 @@ This hardware configuration allows for full system integration with the software
 
 ---
 
-## File Structure
-
-### Root Directory
-- `power_server.py` – main Flask backend; includes REST API, data fetcher, MQTT handler, and algorithm runners.
-- `smartgrid.db` – SQLite database storing tick-wise data and deferrable loads.
-
-### static
-- **UI files** served directly by Flask:
-  - `index.html` – real-time dashboard
-  - `yesterday.html` – historical data viewer
-  - `controls.html` – manual override + system status
-  - `style.css` – Tailwind-based custom UI styling
-  - `dashboard.js`, `yesterday.js`, `controls.js` – JavaScript logic for fetching, plotting, and interactivity
-
-### models
-- `lstm_model.h5`, `dqn_resnet_model.keras`, etc. – ML models used for prediction and policy generation
-- `*.pkl` – Scalers for pre/post-processing model inputs and outputs
-
-### mqtt
-- Broker setup for MQTT communication between server and Picos
-- Includes test utilities to simulate device input during development
-
----
-
 ## Videos
 - A brief demo showing the whole system functionality can be found here: <link~>
