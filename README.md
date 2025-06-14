@@ -45,7 +45,7 @@ The hardware subsystem is built around Raspberry Pi Pico W microcontrollers, eac
   Simulated using a programmable power supply (PSU), this emulates the output of a solar panel. The voltage and current can be manually modulated to mimic real sun irradiance and the day–night cycle.
 
 - **Switch-Mode Power Supply (SMPS)**:  
-  A DC-DC converter is used to implement MPPT (Maximum Power Point Tracking) via adjustable duty cycles, maximizing energy extraction from the emulated PV source.
+  A DC converter is used to implement MPPT (Maximum Power Point Tracking) via adjustable duty cycles, maximizing energy extraction from the emulated PV source.
 
 - **Supercapacitor Storage**:  
   Serves as the main energy buffer in the system, storing excess energy during low demand and releasing it during peak demand. No batteries are used in the setup.
