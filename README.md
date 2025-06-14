@@ -1,7 +1,7 @@
 # Power Rangers Green
 
-**2025 Summer Term Project**  
-Smart Grid Energy Management System  
+## Smart Grid Energy Management System  
+**2025 Summer Term Project**
 ==============================
 
 This repository contains the complete implementation of a smart energy management system designed to optimise energy usage across photovoltaic (PV) input, a supercapacitor storage unit, LED loads, and a simulated grid. The backend coordinates energy flow based on real-time data, predictive models, and pricing signals from an external API. The frontend provides clear UI dashboards for live monitoring, historical review, and manual control. The algorithum implements machine learning model to minimize energy cost.
