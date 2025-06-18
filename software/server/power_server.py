@@ -27,8 +27,6 @@ app = Flask(
     static_url_path=''          
 )
 
-# When mppt_enabled is False → publish real irradiance from ICElec.
-# When mppt_enabled is True → override next publishes: 70 → 100 → random[95–100] …
 mppt_enabled = False
 mppt_stage = 0  
 
@@ -234,21 +232,7 @@ def fetch_and_store_grid_data():
         sj = sun_resp.json()
         sun_val = sj.get("sun") if isinstance(sj, dict) else sj
 
-        # Decide what to publish under "PV/irradiance" 
-        if mppt_enabled:
-            if mppt_stage == 0:
-                publish_val = 70
-                mppt_stage = 1
-            elif mppt_stage == 1:
-                publish_val = 100
-                mppt_stage = 2
-            else:
-                publish_val = random.randint(95, 100)
-            mqtt_client.publish("PV/irradiance", str(publish_val))
-            print(f"[MPPT OVERRIDE] Published irradiance: {publish_val} to PV/irradiance")
-        else:
-            mqtt_client.publish("PV/irradiance", str(sun_val))
-            print(f"Published irradiance: {sun_val} to PV/irradiance")
+        mqtt_client.publish("PV/irradiance", str(sun_val))
 
         demand_resp = requests.get(f"{BASE_URL}/demand", timeout=5)
         demand_resp.raise_for_status()
