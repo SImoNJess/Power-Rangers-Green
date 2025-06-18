@@ -28,7 +28,8 @@ app = Flask(
 )
 
 mppt_enabled = False
-mppt_stage = 0  
+mppt_stage = 0 
+EFFICIENCY = 0.8   # only 80% of energy makes it through the hardware 
 
 SCALER_DQN = joblib.load("scaler_dqn.pkl") 
 DQN_MODEL = load_model(
@@ -526,7 +527,7 @@ def get_control_status():
         'price_buy':    current_price_buy,
         'price_sell':   current_price_sell,
         'mppt_enabled': mppt_enabled,
-        'cost':         round(cost_state["total_cost"] / 100.0, 2)
+        'cost':         round(cost_state["total_cost"] / 100.0 * EFFICIENCY, 2)
     })
     action_live = price_threshold_policy(
         [[irradiance, float(latest["demand"]), current_price_buy, current_price_sell]],
@@ -659,7 +660,7 @@ def get_grid_status():
             last_msg_time["PV"] is not None
             and (time.time() - last_msg_time["PV"] < 10)
         ),
-        "cost":         round(cost_state["total_cost"] / 100.0, 2),
+        "cost":         round(cost_state["total_cost"] / 100.0 * EFFICIENCY, 2),
         'def_w':     round(def_w,2),
         'combined':  round(combined,2),
         'history':   history
