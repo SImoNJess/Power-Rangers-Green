@@ -65,3 +65,8 @@ This hardware configuration allows for full system integration with the software
 
 ## Videos
 - A brief demo showing the whole system functionality can be found here: [YouTube demo](https://www.youtube.com/watch?v=EwTr0gmSWCQ)
+
+---
+
+## Website
+- Link to website today dashboard [Today](http://18.171.242.140:5000/index.html)
